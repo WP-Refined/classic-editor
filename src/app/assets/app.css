@@ -1,0 +1,5 @@
+@import '../../../node_modules/@jobinsjp/vue3-datatable/dist/style.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
