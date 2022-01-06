@@ -63,6 +63,8 @@ export default {
     });
     const isLoading = ref(false);
 
+    console.log('testing lint');
+
     // Template Helper Methods
     const loadData = async query => {
       isLoading.value = true;
