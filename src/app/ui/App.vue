@@ -9,7 +9,11 @@
         <div class="flex flex-row md:ml-auto">
           <a href="#" class="p-2 lg:px-4 md:mx-2">Settings</a>
           <div>
-            <img alt="Vue logo" src="./../assets/logo.png" style="border-radius: 50%; width: 40px; height: 40px;" />
+            <img
+              alt="Vue logo"
+              src="./../assets/logo.png"
+              style="border-radius: 50%; width: 40px; height: 40px"
+            />
           </div>
         </div>
       </div>
@@ -22,7 +26,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'App'
-  }
+export default {
+  name: 'App',
+};
 </script>

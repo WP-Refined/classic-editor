@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "format": "prettier . --write",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -21,7 +23,11 @@
     "axios": "^0.24.0",
     "electron": "^16.0.5",
     "electron-is-dev": "^2.0.0",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-vue": "^8.2.0",
     "postcss": "^8.4.5",
+    "prettier": "2.5.1",
     "tailwindcss": "^3.0.8",
     "vite": "^2.7.2"
   }

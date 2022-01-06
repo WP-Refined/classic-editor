@@ -10,11 +10,11 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
-  import { useRefHistory } from '@vueuse/core';
-  const text = ref('');
-  const { history, undo, redo } = useRefHistory(text, {
-    deep: true,
-    capacity: 5,
-  });
+import { ref } from 'vue';
+import { useRefHistory } from '@vueuse/core';
+const text = ref('');
+const { history, undo, redo } = useRefHistory(text, {
+  deep: true,
+  capacity: 5,
+});
 </script>
