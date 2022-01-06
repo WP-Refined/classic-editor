@@ -63,8 +63,6 @@ export default {
     });
     const isLoading = ref(false);
 
-    console.log('testing lint');
-
     // Template Helper Methods
     const loadData = async query => {
       isLoading.value = true;
@@ -78,7 +76,6 @@ export default {
           },
         },
       );
-      console.log('response', response);
       tableData.value = response.data;
       pagination.value = {
         page: query.page,

@@ -4,26 +4,20 @@
   "main": "main.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-    "format": "prettier . --write",
+    "format": "prettier --write",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "electron:start": "electron ."
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "electron:start": "electron .",
+    "prepare": "husky install"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,vue}": [
       "prettier --write",
-      "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-      "git add"
+      "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
     ],
     "*.{html,css}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "dependencies": {
