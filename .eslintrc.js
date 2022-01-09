@@ -7,4 +7,5 @@ module.exports = {
     'vue/no-unused-vars': 'error',
     'no-console': 'error',
   },
+  ignorePatterns: ['dist/*'],
 };

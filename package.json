@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-    "format": "prettier --write",
+    "format": "prettier . --write",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -13,19 +13,24 @@
   },
   "lint-staged": {
     "*.{js,vue}": [
-      "prettier --write",
+      "prettier . --write",
       "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
     ],
     "*.{html,css}": [
-      "prettier --write"
+      "prettier . --write"
     ]
   },
   "dependencies": {
+    "@headlessui/vue": "^1.4.2",
+    "@heroicons/vue": "^1.0.5",
     "@jobinsjp/vue3-datatable": "^1.0.12",
+    "@tailwindcss/forms": "^0.4.0",
     "@vueuse/core": "^7.5.1",
+    "electron-store": "^8.0.1",
     "luxon": "^2.3.0",
-    "vue": "^3.2.25",
-    "vue-router": "^4.0.12"
+    "vue": "^3.2.26",
+    "vue-router": "^4.0.12",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",

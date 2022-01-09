@@ -7,7 +7,9 @@
         </div>
 
         <div class="flex flex-row md:ml-auto">
-          <a href="#" class="p-2 lg:px-4 md:mx-2">Settings</a>
+          <button class="p-2 lg:px-4 md:mx-2" @click="showSettingsModal = true">
+            Settings
+          </button>
           <div>
             <img
               alt="Vue logo"
@@ -22,11 +24,23 @@
 
   <main class="container mt-10 mx-auto">
     <router-view></router-view>
+
+    <SettingsModal
+      v-model:close.sync="showSettingsModal"
+      :open="showSettingsModal"
+    />
   </main>
 </template>
 
 <script>
+import SettingsModal from '../../settings/ui/SettingsModal.vue';
+
 export default {
-  name: 'App',
+  components: { SettingsModal },
+  data() {
+    return {
+      showSettingsModal: false,
+    };
+  },
 };
 </script>
