@@ -7,7 +7,6 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     vue(),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
     }),
