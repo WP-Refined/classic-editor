@@ -1,120 +1,135 @@
 <template>
-  <div class="dt-w-1/2 sm:dt-w-full overflow-hidden">
-    <data-table
-      :rows="tableData"
-      :pagination="pagination"
-      :query="query"
-      :loading="isLoading"
-      filter
-      @load-data="loadData"
+  <va-card color="background" style="padding: 2rem 0.75rem 0.75rem">
+    <div class="row">
+      <va-input
+        v-model.number="perPage"
+        class="flex mb-2 md3"
+        type="number"
+        placeholder="Items..."
+        label="Items per page"
+      />
+
+      <va-input
+        v-model.number="currentPage"
+        class="flex mb-2 md3"
+        type="number"
+        placeholder="Page..."
+        label="Current page"
+      />
+
+      <va-input
+        v-model="filter"
+        class="flex mb-2 md3"
+        placeholder="Filter..."
+      />
+    </div>
+
+    <va-data-table
+      :items="items"
+      :columns="columns"
+      :per-page="perPage"
+      :current-page="currentPage"
+      :selectable="true"
+      :filter="filter"
+      @filtered="filtered = $event.items"
     >
-      <template #thead>
-        <table-head>ID</table-head>
-        <table-head>Title</table-head>
-        <table-head>Content</table-head>
-        <table-head>Date Updated</table-head>
-        <table-head>Date Created</table-head>
-        <table-head />
+      <template #bodyAppend>
+        <tr>
+          <td colspan="8" class="table-example--pagination">
+            <va-pagination v-model="currentPage" input :pages="pages" />
+          </td>
+        </tr>
       </template>
-
-      <template #tbody="{ row }">
-        <table-body v-text="row.id" />
-
-        <table-body v-text="truncateText(row.title.rendered, 50)" />
-
-        <table-body
-          v-text="truncateText(formatRenderedContent(row.excerpt.rendered), 50)"
-        />
-
-        <table-body v-text="formatDate(row.modified)" />
-
-        <table-body v-text="formatDate(row.date)" />
-
-        <table-body>
-          <button class="rounded">Edit</button>
-        </table-body>
-      </template>
-    </data-table>
-  </div>
+    </va-data-table>
+  </va-card>
 </template>
 
 <script>
-import axios from 'axios';
-import { ref, reactive } from 'vue';
-import { DateTime } from 'luxon';
-import { DataTable, TableBody, TableHead } from '@jobinsjp/vue3-datatable';
+import { defineComponent } from 'vue';
+import { VaCard, VaInput, VaDataTable } from 'vuestic-ui';
 
-const settings = reactive({
-  apiUrl: 'https://wp-preflight.local',
-});
-
-export default {
+export default defineComponent({
   components: {
-    TableBody,
-    TableHead,
-    DataTable,
+    VaDataTable,
+    VaCard,
+    VaInput,
   },
-  setup() {
-    // Reactive references
-    const tableData = ref([]);
-    const pagination = ref({});
-    const query = ref({
-      search: '',
-    });
-    const isLoading = ref(false);
+  data() {
+    const users = [
+      {
+        id: 1,
+        name: 'Leanne Graham',
+        username: 'Bret',
+        email: 'Sincere@april.biz',
+        phone: '1-770-736-8031 x56442',
+        website: 'hildegard.org',
+      },
+      {
+        id: 2,
+        name: 'Ervin Howell',
+        username: 'Antonette',
+        email: 'Shanna@melissa.tv',
+        phone: '010-692-6593 x09125',
+        website: 'anastasia.net',
+      },
+      {
+        id: 3,
+        name: 'Clementine Bauch',
+        username: 'Samantha',
+        email: 'Nathan@yesenia.net',
+        phone: '1-463-123-4447',
+        website: 'ramiro.info',
+      },
+      {
+        id: 4,
+        name: 'Patricia Lebsack',
+        username: 'Karianne',
+        email: 'Julianne.OConner@kory.org',
+        phone: '493-170-9623 x156',
+        website: 'kale.biz',
+      },
+      {
+        id: 5,
+        name: 'Chelsey Dietrich',
+        username: 'Kamren',
+        email: 'Lucio_Hettinger@annie.ca',
+        phone: '(254)954-1289',
+        website: 'demarco.info',
+      },
+    ];
 
-    // Template Helper Methods
-    const loadData = async query => {
-      isLoading.value = true;
-      const response = await axios.get(
-        settings.apiUrl + '/wp-json/wp/v2/posts',
-        {
-          params: {
-            page: query.page <= 0 ? 1 : query.page,
-            per_page: query.per_page,
-            search: query.search,
-          },
-        },
-      );
-      tableData.value = response.data;
-      pagination.value = {
-        page: query.page,
-        total: Number(response.headers['x-wp-totalpages']),
-      };
-      isLoading.value = false;
-    };
-
-    const formatRenderedContent = content => {
-      const tmpDiv = document.createElement('div');
-      tmpDiv.innerHTML = content;
-      return tmpDiv.textContent || tmpDiv.innerText || '';
-    };
-
-    const formatDate = date =>
-      date ? DateTime.fromISO(date).toFormat('FF') : null;
-
-    const formatUrl = url => (url.startsWith('http') ? url : `https://${url}`);
-
-    const truncateText = (text, max) => {
-      const truncated =
-        text && text.length > max
-          ? text.slice(0, max).split(' ').slice(0, -1).join(' ')
-          : text;
-
-      return truncated + '...';
-    };
+    const columns = [
+      { key: 'id', sortable: true },
+      { key: 'username', sortable: true },
+      { key: 'name', sortable: true },
+      { key: 'email', sortable: true },
+      { key: 'phone' },
+      { key: 'website' },
+    ];
 
     return {
-      tableData,
-      pagination,
-      query,
-      isLoading,
-      loadData,
-      formatRenderedContent,
-      formatDate,
-      formatUrl,
-      truncateText,
+      items: users,
+      columns,
+      perPage: 3,
+      currentPage: 1,
+      filter: '',
+      filtered: users,
     };
   },
-};
+
+  computed: {
+    pages() {
+      return this.perPage && this.perPage !== 0
+        ? Math.ceil(this.filtered.length / this.perPage)
+        : this.filtered.length;
+    },
+  },
+});
 </script>
+
+<style lang="scss" scoped>
+.table-example--pagination {
+  text-align: center;
+  text-align: -webkit-center;
+}
+</style>

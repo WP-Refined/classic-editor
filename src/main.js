@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import App from './app/ui/App.vue';
-import vuetify from './app/plugins/vuetify';
-import { loadFonts } from './app/plugins/webfontloader';
 import routes from './routes';
+import '@/app/assets/sass/main.scss';
+// import { VuesticPluginsWithoutComponents } from 'vuestic-ui';
 
-loadFonts();
+const app = createApp(App);
 
-createApp(App).use(routes).use(vuetify).mount('#app');
+app.use(routes).mount('#app');
