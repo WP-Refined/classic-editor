@@ -4,3 +4,4 @@ dist/
 
 # IDE
 .idea/
+.vscode/

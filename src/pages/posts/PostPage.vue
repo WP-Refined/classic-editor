@@ -3,7 +3,7 @@
     <div class="row">
       <va-input
         v-model.number="perPage"
-        class="flex mb-2 md3"
+        class="flex mb-2 md2"
         type="number"
         placeholder="Items..."
         label="Items per page"
@@ -11,7 +11,7 @@
 
       <va-input
         v-model.number="currentPage"
-        class="flex mb-2 md3"
+        class="flex mb-2 md2"
         type="number"
         placeholder="Page..."
         label="Current page"
@@ -20,23 +20,24 @@
       <va-input
         v-model="filter"
         class="flex mb-2 md3"
-        placeholder="Filter..."
+        label="Filter"
+        placeholder="Search posts..."
       />
     </div>
 
     <va-data-table
       :items="items"
       :columns="columns"
-      :per-page="perPage"
       :current-page="currentPage"
       :selectable="true"
+      :loading="isTableLoading"
       :filter="filter"
       @filtered="filtered = $event.items"
     >
       <template #bodyAppend>
         <tr>
-          <td colspan="8" class="table-example--pagination">
-            <va-pagination v-model="currentPage" input :pages="pages" />
+          <td colspan="8" class="post-table--pagination">
+            <va-pagination v-model="currentPage" input :pages="totalPages" />
           </td>
         </tr>
       </template>
@@ -46,90 +47,129 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { VaCard, VaInput, VaDataTable } from 'vuestic-ui';
+import { DateTime } from 'luxon';
+import axios from 'axios';
+import { VaCard, VaInput, VaDataTable, VaPagination } from 'vuestic-ui';
 
 export default defineComponent({
   components: {
     VaDataTable,
     VaCard,
     VaInput,
+    VaPagination,
   },
-  data() {
-    const users = [
-      {
-        id: 1,
-        name: 'Leanne Graham',
-        username: 'Bret',
-        email: 'Sincere@april.biz',
-        phone: '1-770-736-8031 x56442',
-        website: 'hildegard.org',
-      },
-      {
-        id: 2,
-        name: 'Ervin Howell',
-        username: 'Antonette',
-        email: 'Shanna@melissa.tv',
-        phone: '010-692-6593 x09125',
-        website: 'anastasia.net',
-      },
-      {
-        id: 3,
-        name: 'Clementine Bauch',
-        username: 'Samantha',
-        email: 'Nathan@yesenia.net',
-        phone: '1-463-123-4447',
-        website: 'ramiro.info',
-      },
-      {
-        id: 4,
-        name: 'Patricia Lebsack',
-        username: 'Karianne',
-        email: 'Julianne.OConner@kory.org',
-        phone: '493-170-9623 x156',
-        website: 'kale.biz',
-      },
-      {
-        id: 5,
-        name: 'Chelsey Dietrich',
-        username: 'Kamren',
-        email: 'Lucio_Hettinger@annie.ca',
-        phone: '(254)954-1289',
-        website: 'demarco.info',
-      },
-    ];
 
+  data() {
     const columns = [
       { key: 'id', sortable: true },
-      { key: 'username', sortable: true },
-      { key: 'name', sortable: true },
-      { key: 'email', sortable: true },
-      { key: 'phone' },
-      { key: 'website' },
+      { key: 'title', sortable: true },
+      { key: 'content' },
+      { key: 'date_updated', sortable: true },
+      { key: 'date_created', sortable: true },
     ];
 
     return {
-      items: users,
+      items: [],
       columns,
-      perPage: 3,
+      totalPages: 1,
+      perPage: 10,
       currentPage: 1,
       filter: '',
-      filtered: users,
+      filtered: [],
+      isTableLoading: true,
+      settings: {
+        apiUrl: 'https://wp-preflight.local',
+      },
     };
   },
 
-  computed: {
-    pages() {
-      return this.perPage && this.perPage !== 0
-        ? Math.ceil(this.filtered.length / this.perPage)
-        : this.filtered.length;
+  watch: {
+    currentPage() {
+      this.fetchPosts();
+    },
+
+    perPage() {
+      this.fetchPosts();
+    },
+  },
+
+  created() {
+    this.fetchPosts();
+  },
+
+  methods: {
+    fetchPosts() {
+      this.isTableLoading = true;
+
+      axios
+        .get(this.settings.apiUrl + '/wp-json/wp/v2/posts', {
+          params: {
+            page: this.currentPage <= 0 ? 1 : this.currentPage,
+            per_page: this.perPage,
+            search: this.filter,
+          },
+        })
+        .then(response => {
+          this.totalPages = Number(response.headers['x-wp-totalpages']);
+          this.items = this.formatPosts(response.data);
+          this.isTableLoading = false;
+        })
+        .catch(error => alert(error.message));
+    },
+
+    formatPosts(posts) {
+      let formatted = [];
+
+      posts.forEach(post => {
+        formatted.push({
+          id: post.id,
+          title: this.truncateText(post.title.rendered, 50),
+          content: this.truncateText(
+            this.formatRenderedContent(post.excerpt.rendered),
+            50,
+          ),
+          link: this.formatUrl(post.link),
+          date_updated: this.formatDate(post.modified),
+          date_created: this.formatDate(post.date),
+        });
+      });
+
+      return formatted;
+    },
+
+    formatRenderedContent(content) {
+      const tmpDiv = document.createElement('div');
+      tmpDiv.innerHTML = content;
+      return tmpDiv.textContent || tmpDiv.innerText || '';
+    },
+
+    formatDate(date) {
+      return date ? DateTime.fromISO(date).toFormat('FF') : null;
+    },
+
+    formatUrl(url) {
+      return url.startsWith('http') ? url : `https://${url}`;
+    },
+
+    truncateText(text, max) {
+      const truncated =
+        text && text.length > max
+          ? text.slice(0, max).split(' ').slice(0, -1).join(' ')
+          : text;
+
+      return truncated + '...';
     },
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.table-example--pagination {
+.post-table--pagination {
   text-align: center;
   text-align: -webkit-center;
+
+  .va-pagination {
+    margin-top: 2rem;
+  }
 }
 </style>
