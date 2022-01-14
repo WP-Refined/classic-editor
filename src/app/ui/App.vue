@@ -10,7 +10,7 @@
     </template>
     <template #right>
       <va-navbar-item>
-        <va-button :rounded="false" icon="settings"> Settings </va-button>
+        <settings-modal />
       </va-navbar-item>
     </template>
   </va-navbar>
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import { VaNavbar, VaNavbarItem, VaAvatar, VaButton } from 'vuestic-ui';
+import { VaNavbar, VaNavbarItem, VaAvatar } from 'vuestic-ui';
+import SettingsModal from '@/components/modals/SettingsModal.vue';
 
 export default {
   name: 'App',
@@ -30,7 +31,7 @@ export default {
     VaNavbar,
     VaNavbarItem,
     VaAvatar,
-    VaButton,
+    SettingsModal,
   },
 };
 </script>
