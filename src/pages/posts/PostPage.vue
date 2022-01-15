@@ -30,9 +30,11 @@
       :columns="columns"
       :current-page="currentPage"
       :selectable="true"
+      :clickable="true"
       :loading="isTableLoading"
       :filter="filter"
       @filtered="filtered = $event.items"
+      @row:click="editPost($event.item.id)"
     >
       <template #bodyAppend>
         <tr>
@@ -46,12 +48,11 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
 import { DateTime } from 'luxon';
 import axios from 'axios';
 import { VaCard, VaInput, VaDataTable, VaPagination } from 'vuestic-ui';
 
-export default defineComponent({
+export default {
   components: {
     VaDataTable,
     VaCard,
@@ -117,6 +118,10 @@ export default defineComponent({
         .catch(error => alert(error.message));
     },
 
+    editPost(postId) {
+      this.$router.push(`/editor/${postId}`);
+    },
+
     formatPosts(posts) {
       let formatted = [];
 
@@ -160,7 +165,7 @@ export default defineComponent({
       return truncated + '...';
     },
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

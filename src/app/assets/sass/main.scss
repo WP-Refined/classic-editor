@@ -1,1 +1,5 @@
 @use 'vuestic-ui/dist/vuestic-ui.css';
+
+@import 'variables';
+@import './classic-editor/header';
+@import './classic-editor/content';

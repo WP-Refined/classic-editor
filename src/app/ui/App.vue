@@ -22,7 +22,7 @@
 
 <script>
 import { VaNavbar, VaNavbarItem, VaAvatar } from 'vuestic-ui';
-import SettingsModal from '@/components/modals/SettingsModal.vue';
+import SettingsModal from '@/components/SettingsModal.vue';
 
 export default {
   name: 'App',
@@ -35,10 +35,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.logo {
-  width: auto;
-  height: 50px;
-}
-</style>

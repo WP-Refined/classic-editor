@@ -1,16 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import PostPage from './pages/posts/PostPage.vue';
-
 export default createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      component: PostPage,
+      component: () => import('./pages/posts/PostPage.vue'),
     },
     {
-      path: '/editor',
+      path: '/editor/:id',
       component: () => import('./pages/editor/EditorPage.vue'),
     },
   ],
