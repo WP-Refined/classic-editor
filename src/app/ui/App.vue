@@ -22,7 +22,7 @@
 
 <script>
 import { VaNavbar, VaNavbarItem, VaAvatar } from 'vuestic-ui';
-import SettingsModal from '@/components/SettingsModal.vue';
+import SettingsModal from '@/app/components/SettingsModal.vue';
 
 export default {
   name: 'App',

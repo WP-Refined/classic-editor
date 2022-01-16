@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon';
+import PostFormatters from '../../app/mixins/PostFormatters';
 import axios from 'axios';
 import { VaCard, VaInput, VaDataTable, VaPagination } from 'vuestic-ui';
 
@@ -59,6 +59,8 @@ export default {
     VaInput,
     VaPagination,
   },
+
+  mixins: [PostFormatters],
 
   data() {
     const columns = [
@@ -103,7 +105,7 @@ export default {
       this.isTableLoading = true;
 
       axios
-        .get(this.settings.apiUrl + '/wp-json/wp/v2/posts', {
+        .get(`${this.settings.apiUrl}/wp-json/wp/v2/posts`, {
           params: {
             page: this.currentPage <= 0 ? 1 : this.currentPage,
             per_page: this.perPage,
@@ -120,49 +122,6 @@ export default {
 
     editPost(postId) {
       this.$router.push(`/editor/${postId}`);
-    },
-
-    formatPosts(posts) {
-      let formatted = [];
-
-      posts.forEach(post => {
-        formatted.push({
-          id: post.id,
-          title: this.truncateText(post.title.rendered, 50),
-          content: this.truncateText(
-            this.formatRenderedContent(post.excerpt.rendered),
-            50,
-          ),
-          link: this.formatUrl(post.link),
-          date_updated: this.formatDate(post.modified),
-          date_created: this.formatDate(post.date),
-        });
-      });
-
-      return formatted;
-    },
-
-    formatRenderedContent(content) {
-      const tmpDiv = document.createElement('div');
-      tmpDiv.innerHTML = content;
-      return tmpDiv.textContent || tmpDiv.innerText || '';
-    },
-
-    formatDate(date) {
-      return date ? DateTime.fromISO(date).toFormat('FF') : null;
-    },
-
-    formatUrl(url) {
-      return url.startsWith('http') ? url : `https://${url}`;
-    },
-
-    truncateText(text, max) {
-      const truncated =
-        text && text.length > max
-          ? text.slice(0, max).split(' ').slice(0, -1).join(' ')
-          : text;
-
-      return truncated + '...';
     },
   },
 };

@@ -62,6 +62,8 @@
       <va-button icon="undo" @click="editor.chain().focus().undo().run()" />
 
       <va-button icon="redo" @click="editor.chain().focus().redo().run()" />
+
+      <va-button icon="save" @click="triggerSave">Save</va-button>
     </div>
 
     <editor-content class="editor--content" :editor="editor" />
@@ -81,34 +83,45 @@ export default {
   },
 
   props: {
-    content: {
-      required: false,
-      type: String,
-      default: '',
+    postData: {
+      required: true,
+      type: Object,
+      default: () => {},
     },
   },
 
-  emits: ['update'],
+  emits: ['altered', 'save'],
 
   data() {
     return {
       editor: null,
+      post: this.postData,
     };
   },
 
   created() {
     this.editor = new Editor({
-      content: this.content,
+      content: this.postData.content,
       extensions: [StarterKit, Underline],
     });
 
+    // TODO: Improve on the mutation of post / meta data
     this.editor.on('update', () => {
-      this.$emit('update', this.editor.getHTML());
+      this.post.content = this.editor.getHTML();
+      this.$emit('altered', this.post);
     });
   },
 
   beforeUnmount() {
     this.editor.destroy();
+  },
+
+  methods: {
+    triggerSave() {
+      this.post.content = this.editor.getHTML();
+
+      this.$emit('save', this.post);
+    },
   },
 };
 </script>
