@@ -2,7 +2,7 @@
   <va-inner-loading :loading="isPostLoading" :size="60">
     <va-card color="background" style="padding: 2rem 0.75rem 0.75rem">
       <div class="row">
-        <div class="md12">
+        <div class="flex md12">
           <classic-editor
             v-if="!isPostLoading"
             :post-data="postData"

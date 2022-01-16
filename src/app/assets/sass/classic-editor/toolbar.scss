@@ -1,0 +1,15 @@
+.editor--toolbar {
+  background: #babfc2;
+  border: 1px solid #babfc2;
+  border-radius: 6px;
+  margin: 0 auto;
+
+  .va-button {
+    border-radius: 6px;
+  }
+
+  .va-progress-bar {
+    width: calc(var(--va-progress-bar-width) - 10px);
+    margin: 0 auto;
+  }
+}
