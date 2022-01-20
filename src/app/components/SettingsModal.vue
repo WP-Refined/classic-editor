@@ -29,6 +29,15 @@
               bordered
             />
             <va-input
+              v-model="apiUser"
+              class="mb-4"
+              label="API User"
+              :rules="[
+                value => (value && value.length > 0) || 'Field is required',
+              ]"
+              bordered
+            />
+            <va-input
               v-model="apiKey"
               label="API Key"
               :rules="[
@@ -43,7 +52,7 @@
         <va-button flat color="secondary" @click="$refs.settingsModal.hide()">
           Cancel
         </va-button>
-        <va-button @click="$refs.settingsForm.validate()"> Save </va-button>
+        <va-button @click="saveSettings()">Save</va-button>
       </template>
     </va-modal>
   </div>
@@ -51,6 +60,7 @@
 
 <script>
 import { VaModal, VaForm, VaInput, VaButton } from 'vuestic-ui';
+import { emit } from '@tauri-apps/api/event';
 
 export default {
   components: {
@@ -63,18 +73,27 @@ export default {
   data() {
     return {
       settingsModal: false,
-      validation: false,
       apiUrl: '',
+      apiUser: '',
       apiKey: '',
     };
   },
 
   methods: {
     saveSettings() {
-      // TODO: Save data using secure FS solution
-      alert('saved');
+      if (!this.$refs.settingsForm.validate()) {
+        return; // TODO - fix validation
+      }
 
-      // this.$refs.settingsModal.hide();
+      emit('update-state', {
+        data: {
+          apiUrl: this.apiUrl,
+          apiUser: this.apiUser,
+          apiKey: this.apiKey,
+        },
+      });
+
+      this.$refs.settingsModal.hide();
     },
   },
 };

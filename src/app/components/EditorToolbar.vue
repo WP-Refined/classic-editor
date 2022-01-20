@@ -6,6 +6,7 @@
       color="gray"
       @click="editor.chain().focus().toggleBold().run()"
     />
+
     <va-button
       :class="{ 'is-active': editor.isActive('italic') }"
       icon="format_italic"

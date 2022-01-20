@@ -29,7 +29,6 @@
       :items="items"
       :columns="columns"
       :current-page="currentPage"
-      :selectable="true"
       :clickable="true"
       :loading="isTableLoading"
       :filter="filter"
@@ -81,7 +80,7 @@ export default {
       filtered: [],
       isTableLoading: true,
       settings: {
-        apiUrl: 'https://wp-preflight.local',
+        apiUrl: '',
       },
     };
   },
@@ -103,6 +102,10 @@ export default {
   methods: {
     fetchPosts() {
       this.isTableLoading = true;
+
+      if (!this.settings.apiUrl) {
+        return; // temporarily skip the fetch at this point
+      }
 
       axios
         .get(`${this.settings.apiUrl}/wp-json/wp/v2/posts`, {
