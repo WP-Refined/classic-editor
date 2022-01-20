@@ -49,13 +49,17 @@
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": false,
+      "http": {
+        "all": true,
+        "request": true
+      }
     },
     "windows": [
       {
         "title": "Classic Editor",
-        "width": 800,
-        "height": 600,
+        "width": 1000,
+        "height": 800,
         "resizable": true,
         "fullscreen": false
       }

@@ -79,18 +79,15 @@
       color="gray"
       @click="editor.chain().focus().redo().run()"
     />
-
-    <va-progress-bar size="small" :model-value="value" />
   </div>
 </template>
 
 <script>
-import { VaButton, VaProgressBar } from 'vuestic-ui';
+import { VaButton } from 'vuestic-ui';
 
 export default {
   components: {
     VaButton,
-    VaProgressBar,
   },
 
   props: {

@@ -36,8 +36,8 @@ export default {
       isPostLoading: false,
       settings: {
         apiUrl: 'https://wp-preflight.local',
-        apiUser: '',
-        apiPassword: '',
+        apiUser: 'admin',
+        apiPassword: '5Twq XuCT avJe 0WV4 Xdoc fNRS',
       },
     };
   },
