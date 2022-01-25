@@ -2,6 +2,11 @@
 // Global Reset
 //####################
 
+// Variable override
+:root {
+  --va-font-family: 'Nunito';
+}
+
 // Vuestic UI
 .va-card {
   box-shadow: none;

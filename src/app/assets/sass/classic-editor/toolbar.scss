@@ -1,11 +1,15 @@
 .editor--toolbar {
-  background: #babfc2;
-  border: 1px solid #babfc2;
+  border: 2px solid #000;
   border-radius: 6px;
   margin: 0 auto;
 
   .va-button {
+    background-color: none !important;
     border-radius: 6px;
+
+    .va-icon {
+      color: #000;
+    }
   }
 
   .va-progress-bar {

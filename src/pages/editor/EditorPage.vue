@@ -36,8 +36,8 @@ export default {
       isPostLoading: false,
       settings: {
         apiUrl: '',
+        apiKey: '',
         apiUser: '',
-        apiPassword: '',
       },
     };
   },

@@ -44,7 +44,9 @@ export default {
     },
 
     formatDate(date) {
-      return date ? DateTime.fromISO(date).toFormat('FF') : null;
+      return date
+        ? DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED)
+        : null;
     },
 
     formatUrl(url) {

@@ -81,6 +81,8 @@ export default {
       isTableLoading: true,
       settings: {
         apiUrl: '',
+        apiKey: '',
+        apiUser: '',
       },
     };
   },

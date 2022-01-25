@@ -10,7 +10,7 @@
     <va-modal
       ref="settingsModal"
       stateful
-      overlay-opacity="0"
+      overlay-opacity="0.3"
       hide-default-actions
     >
       <template #header>
