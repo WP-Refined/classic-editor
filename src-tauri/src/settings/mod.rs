@@ -40,7 +40,7 @@ pub fn get_settings() -> Result<Vec<Setting>> {
     })
   })?;
 
-  let mut payload: Vec<crate::settings::models::Setting> = Vec::new();
+  let mut payload: Vec<Setting> = Vec::new();
   for setting in settings_iter {
     payload.push(setting.unwrap());
   }
